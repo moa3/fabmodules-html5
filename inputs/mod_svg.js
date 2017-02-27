@@ -99,7 +99,7 @@ define(['require',
          } else {
             var units = 90
          }
-         globals.dpi = 300
+         globals.dpi = 1200
          globals.svg = {}
          globals.svg.units = units
          globals.svg.width = parseFloat(width)
