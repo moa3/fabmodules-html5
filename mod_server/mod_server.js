@@ -86,7 +86,7 @@ function setup(options, callback) {
 function main() {
   var options = {
     port: '12345',
-    allowedAddress: '127.0.0.1'
+    allowedAddress: '0.0.0.0'
   };
 
   setup(options, function(err) {
