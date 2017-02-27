@@ -16,6 +16,7 @@ define(['require',
    'handlebars',
    'mods/mod_ui',
    'mods/mod_globals',
+   'mods/mod_domparser',
    'outputs/mod_outputs',
    'mods/mod_file',
    'processes/mod_image',
@@ -27,6 +28,8 @@ define(['require',
    var globals = require('mods/mod_globals');
    var outputs = require('outputs/mod_outputs');
    var fileUtils = require('mods/mod_file');
+   var domparser = require('mods/mod_domparser');
+   var parser = new domparser();
    var imageUtils = require('processes/mod_image')
    var findEl = globals.findEl;
    var mod_svg_input_controls_tpl = Handlebars.compile(require('text!templates/mod_svg_input_controls.html'));
@@ -73,20 +76,10 @@ define(['require',
          //
          // get size
          //
-         str = event.target.result
-         var i = str.indexOf("width")
-         if (i == -1) {
-            ui.ui_prompt("error: SVG width not found")
-            return
-         }
-         var i1 = str.indexOf("\"", i + 1)
-         var i2 = str.indexOf("\"", i1 + 1)
-         var width = str.substring(i1 + 1, i2)
-         i = str.indexOf("height")
-         i1 = str.indexOf("\"", i + 1)
-         i2 = str.indexOf("\"", i1 + 1)
-         var height = str.substring(i1 + 1, i2)
-         ih = str.indexOf("height")
+         var svgDoc = parser.parseFromString(event.target.result, "image/svg+xml");
+         var svgEl = svgDoc.getElementsByTagName('svg')[0];
+         var width = svgEl.getAttribute('width');
+         var height = svgEl.getAttribute('height');
          if (width.indexOf("px") != -1) {
             width = width.slice(0, -2)
             height = height.slice(0, -2)
